@@ -3,105 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pirámide Invertida - Lotería</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      background: #f9f9f9;
-      text-align: center;
-    }
-    h1 {
-      color: #b30000;
-    }
-    .input-group {
-      margin-bottom: 1rem;
-    }
-    input[type="number"] {
-      width: 60px;
-      font-size: 1.2rem;
-      text-align: center;
-      margin: 0 5px;
-    }
-    button {
-      padding: 0.8rem 1.5rem;
-      font-size: 1rem;
-      background: #b30000;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    .result {
-      margin-top: 2rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-  </style>
+  <title>Predicción de Números de Lotería</title>
 </head>
 <body>
-  <h1>Pirámide Invertida</h1>
-  <div class="input-group">
-    <input type="number" id="n1" placeholder="Ej: 24" min="0" max="99">
-    <input type="number" id="n2" placeholder="Ej: 76" min="0" max="99">
-    <input type="number" id="n3" placeholder="Ej: 29" min="0" max="99">
-    <input type="number" id="n4" placeholder="Ej: 86" min="0" max="99">
-  </div>
-  <button onclick="calcularPiramide()">Calcular</button>
+  <h1>Calculadora de Números por Pirámide Invertida</h1>
+  <form id="formulario">
+    <label for="num1">Número 1:</label><input type="text" id="num1" required><br>
+    <label for="num2">Número 2:</label><input type="text" id="num2" required><br>
+    <label for="num3">Número 3:</label><input type="text" id="num3" required><br>
+    <label for="num4">Número 4:</label><input type="text" id="num4" required><br>
+    <button type="submit">Calcular</button>
+  </form>
+  <h2>Combinaciones Posibles:</h2>
+  <div id="resultado"></div>
 
-  <div class="result" id="resultadoFinal">
-    <!-- Resultado aparecerá aquí -->
-  </div>
+  <footer style="text-align:center; margin-top: 2em; font-size: 0.9em;">
+    <a href="privacidad.html">Política de Privacidad</a> |
+    <a href="terminos.html">Términos y Condiciones</a> |
+    <a href="contacto.html">Contacto</a>
+  </footer>
 
   <script>
-    function calcularPiramide() {
-      const nums = [
-        document.getElementById('n1').value,
-        document.getElementById('n2').value,
-        document.getElementById('n3').value,
-        document.getElementById('n4').value
+    function sumaVectorial(numero) {
+      return numero.split('').reduce((sum, n) => sum + parseInt(n), 0).toString();
+    }
+
+    function reducirADigito(numero) {
+      let sum = parseInt(numero);
+      while (sum >= 10) {
+        sum = sum.toString().split('').reduce((a, b) => a + parseInt(b), 0);
+      }
+      return sum;
+    }
+
+    document.getElementById('formulario').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const fila1 = [
+        document.getElementById('num1').value,
+        document.getElementById('num2').value,
+        document.getElementById('num3').value,
+        document.getElementById('num4').value
       ];
 
-      const fila1 = nums.flatMap(n => n.toString().padStart(2, '0').split('').map(Number));
-
-      function sumatoriaVectorial(fila) {
-        const nueva = [];
-        for (let i = 0; i < fila.length - 1; i++) {
-          const suma = fila[i] + fila[i + 1];
-          nueva.push(suma % 10); // valor decimal
-        }
-        return nueva;
+      let piramide = [fila1];
+      for (let i = 1; i < 8; i++) {
+        let filaAnterior = piramide[i - 1];
+        let nuevaFila = filaAnterior.map(n => sumaVectorial(n));
+        piramide.push(nuevaFila);
       }
 
-      let fila = fila1;
-      const filas = [fila1];
-      for (let i = 0; i < 6; i++) {
-        fila = sumatoriaVectorial(fila);
-        filas.push(fila);
-      }
+      const fila7 = piramide[7].map(reducirADigito);
+      const fila8 = piramide[8].map(reducirADigito);
+      const fila9 = fila7.map((n, i) => reducirADigito((parseInt(n) + parseInt(fila8[i])).toString()));
+      const fila10 = fila9.map(n => reducirADigito(sumaVectorial(n.toString())));
 
-      const fila7 = filas[6];
-      const fila8 = sumatoriaVectorial(fila7);
-      filas.push(fila8);
-
-      const fila9 = fila7.map(d => (d + fila8[0]) % 10);
-      filas.push(fila9);
-
-      const fila10 = sumatoriaVectorial(fila9);
-      filas.push(fila10);
-
-      const sugerencias = [...fila9, ...fila10];
       const combinaciones = [];
-      for (let i = 0; i < sugerencias.length; i++) {
-        for (let j = i + 1; j < sugerencias.length; j++) {
-          combinaciones.push(`${sugerencias[i]}${sugerencias[j]}`);
+      for (let i = 0; i < fila9.length; i++) {
+        for (let j = 0; j < fila10.length; j++) {
+          if (i !== j) {
+            combinaciones.push(`${fila9[i]}${fila10[j]}`);
+          }
         }
       }
 
-      document.getElementById('resultadoFinal').innerHTML = `
-        Posibles combinaciones: <br><br>
-        ${combinaciones.join(', ')}
-      `;
-    }
+      document.getElementById('resultado').innerText = combinaciones.filter((v, i, a) => a.indexOf(v) === i).join(', ');
+    });
   </script>
 </body>
 </html>
