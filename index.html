@@ -5,54 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Coloca aquí los números que salieron ayer</title>
   <style>
-  .navbar {
-    background-color: #222;
-    padding: 10px 0;
-    text-align: center;
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  .navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .navbar ul li {
-    display: inline-block;
-    margin: 0 15px;
-  }
-
-  .navbar ul li a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    font-family: sans-serif;
-    transition: color 0.3s;
-  }
-
-  .navbar ul li a:hover {
-    color: #ffcc00;
-  }
-</style>
-  <style>
     body {
       font-family: sans-serif;
-      padding: 2rem;
+      margin: 0;
+      padding: 1rem;
       background: #f9f9f9;
       text-align: center;
     }
+
     h1 {
       color: #b30000;
-    }
-    .input-group {
+      font-size: 1.5rem;
       margin-bottom: 1rem;
     }
+
+    .navbar {
+      background-color: #222;
+      padding: 10px 0;
+    }
+
+    .navbar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .navbar ul li {
+      margin: 10px;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-family: sans-serif;
+      transition: color 0.3s;
+    }
+
+    .navbar ul li a:hover {
+      color: #ffcc00;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
     input[type="number"] {
       width: 60px;
       font-size: 1.2rem;
       text-align: center;
-      margin: 0 5px;
     }
+
     button {
       padding: 0.8rem 1.5rem;
       font-size: 1rem;
@@ -60,46 +74,99 @@
       color: white;
       border: none;
       cursor: pointer;
+      margin-top: 10px;
     }
+
     .result {
       margin-top: 2rem;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: bold;
+    }
+
+    section, p {
+      padding: 0 1rem;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      input[type="number"] {
+        width: 50px;
+        font-size: 1rem;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .navbar ul {
+        flex-direction: column;
+        gap: 5px;
+      }
     }
   </style>
 </head>
 <body>
+
   <header>
-  <nav class="navbar">
-    <ul>
-      <li><a href="index.html">Inicio</a></li>
-      <li><a href="#como-funciona">Cómo funciona</a></li>
-      <li><a href="contacto.html">Contacto</a></li>
-      <li><a href="privacidad.html">Privacidad</a></li>
-      <li><a href="terminos.html">Términos</a></li>
-    </ul>
-  </nav>
-</header>
+    <nav class="navbar">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="#como-funciona">Cómo funciona</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="privacidad.html">Privacidad</a></li>
+        <li><a href="terminos.html">Términos</a></li>
+      </ul>
+    </nav>
+  </header>
+
   <h1>Coloca aquí los números que salieron ayer</h1>
+
   <div class="input-group">
-    <input type="number" id="n1" placeholder="" min="0" max="99">
-    <input type="number" id="n2" placeholder="" min="0" max="99">
-    <input type="number" id="n3" placeholder="" min="0" max="99">
-    <input type="number" id="n4" placeholder="" min="0" max="99">
+    <input type="number" id="n1" min="0" max="99">
+    <input type="number" id="n2" min="0" max="99">
+    <input type="number" id="n3" min="0" max="99">
+    <input type="number" id="n4" min="0" max="99">
   </div>
+
   <button onclick="calcularPiramide()">Calcular</button>
 
   <div class="result" id="resultadoFinal">
     <!-- Resultado aparecerá aquí -->
   </div>
+
   <h2 style="text-align: center;">Bienvenido a La Suerte</h2>
-<p style="max-width: 600px; margin: auto; text-align: center; font-size: 16px;">
-La Suerte es una herramienta gratuita que genera combinaciones de números para jugar la lotería, basada en una fórmula matemática a partir de los resultados del dia anterior de las loterias dominicanas.  
-<br><br>
-Nuestro sistema toma como base los resultados recientes de las principales loterías dominicanas y realiza un cálculo que ofrece posibles combinaciones numéricas para ayudarte en tus jugadas y que puedas sacar algun beneficio.  
-<br><br>
-Este sitio es únicamente de uso informativo y recreativo. No garantizamos premios ni resultados. Juega con responsabilidad.
-</p>
+  <p style="max-width: 700px; margin: auto; text-align: center; font-size: 16px;">
+    La Suerte es una herramienta gratuita que genera combinaciones de números para jugar la lotería,
+    basada en una fórmula matemática a partir de los resultados del día anterior de las loterías dominicanas.
+    <br><br>
+    Nuestro sistema toma como base los resultados recientes de las principales loterías dominicanas y realiza
+    un cálculo que ofrece posibles combinaciones numéricas para ayudarte en tus jugadas.
+    <br><br>
+    Este sitio es únicamente de uso informativo y recreativo. No garantizamos premios ni resultados. Juega con responsabilidad.
+  </p>
+
+  <section id="como-funciona" style="padding: 40px 20px; background-color: #f9f9f9;">
+    <h2>¿Cómo funciona?</h2>
+    <p style="max-width: 700px; margin: auto; line-height: 1.6; font-size: 16px;">
+      Esta herramienta utiliza un modelo matemático basado en resultados anteriores de las principales loterías
+      dominicanas (Real, Gana Más, Leidsa y Nacional Noche).
+      <br><br>
+      Al ingresar los premios mayores del día anterior, el sistema aplica una fórmula de reducción y combinación 
+      para generar posibles números dobles con alta probabilidad estadística. 
+      <br><br>
+      Todo se calcula automáticamente, de manera precisa y sin intervención humana.
+    </p>
+  </section>
+
+  <footer style="text-align:center; margin-top: 2em; font-size: 0.9em;">
+    <a href="privacidad.html">Política de Privacidad</a> |
+    <a href="terminos.html">Términos y Condiciones</a> |
+    <a href="contacto.html">Contacto</a>
+  </footer>
+
   <script>
     function calcularPiramide() {
       const nums = [
@@ -115,7 +182,7 @@ Este sitio es únicamente de uso informativo y recreativo. No garantizamos premi
         const nueva = [];
         for (let i = 0; i < fila.length - 1; i++) {
           const suma = fila[i] + fila[i + 1];
-          nueva.push(suma % 10); // valor decimal
+          nueva.push(suma % 10);
         }
         return nueva;
       }
@@ -150,32 +217,6 @@ Este sitio es únicamente de uso informativo y recreativo. No garantizamos premi
         ${combinaciones.join(', ')}
       `;
     }
-  </script>   
-  <section id="como-funciona" style="padding: 40px 20px; background-color: #f9f9f9; font-family: sans-serif;">
-  <h2 style="text-align: center;">¿Cómo funciona?</h2>
-  <p style="max-width: 700px; margin: auto; line-height: 1.6; font-size: 16px;">
-    Esta herramienta utiliza un modelo matemático basado en resultados anteriores de las principales loterías
-    dominicanas (Real, Gana Más, Leidsa y Nacional Noche).
-    <br><br>
-    Al ingresar los premios mayores del día anterior, el sistema aplica una fórmula de reducción y combinación 
-    para generar posibles números dobles con alta probabilidad estadística. 
-    <br><br>
-    Todo se calcula automáticamente, de manera precisa y sin intervención humana.
-  </p>
-</section>
-  <footer style="text-align:center; margin-top: 2em; font-size: 0.9em;">
-    <a href="privacidad.html">Política de Privacidad</a> |
-    <a href="terminos.html">Términos y Condiciones</a> |
-    <a href="contacto.html">Contacto</a>
-  </footer>
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
