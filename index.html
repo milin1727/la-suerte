@@ -6,9 +6,7 @@
   <title>Coloca aquí los números que salieron ayer</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: sans-serif;
@@ -18,11 +16,7 @@
       text-align: center;
     }
 
-    h1 {
-      color: #b30000;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
+    h1 { color: #b30000; font-size: 1.5rem; margin-bottom: 1rem; }
 
     .navbar {
       background-color: #222;
@@ -97,23 +91,10 @@
     }
 
     @media (max-width: 600px) {
-      h1 {
-        font-size: 1.3rem;
-      }
-
-      input[type="number"] {
-        width: 50px;
-        font-size: 1rem;
-      }
-
-      button {
-        width: 100%;
-      }
-
-      .navbar ul {
-        flex-direction: column;
-        gap: 5px;
-      }
+      h1 { font-size: 1.3rem; }
+      input[type="number"] { width: 50px; font-size: 1rem; }
+      button { width: 100%; }
+      .navbar ul { flex-direction: column; gap: 5px; }
     }
   </style>
 </head>
@@ -142,9 +123,7 @@
 
   <button id="btnCalcular" disabled>Calcular</button>
 
-  <div class="result" id="resultadoFinal">
-    <!-- Resultado aparecerá aquí -->
-  </div>
+  <div class="result" id="resultadoFinal"></div>
 
   <div style="margin-top: 2rem;">
     <button onclick="compartir()">Compartir por WhatsApp</button>
@@ -152,7 +131,29 @@
 
   <div id="historial"></div>
 
-  <script>    
+  <h2>Bienvenido a La Suerte</h2>
+  <p style="max-width: 700px; margin: auto; text-align: center; font-size: 16px;">
+    La Suerte es una herramienta gratuita que genera combinaciones de números para jugar la lotería, basada en una fórmula matemática a partir de los resultados del día anterior de las loterías dominicanas.
+    <br><br>
+    Este sitio es únicamente de uso informativo y recreativo. No garantizamos premios ni resultados. Juega con responsabilidad.
+  </p>
+
+  <section id="como-funciona" style="padding: 40px 20px; background-color: #f9f9f9;">
+    <h2>¿Cómo funciona?</h2>
+    <p style="max-width: 700px; margin: auto; line-height: 1.6; font-size: 16px;">
+      Esta herramienta utiliza un modelo matemático basado en resultados anteriores de las principales loterías dominicanas (Real, Gana Más, Leidsa y Nacional Noche).
+      <br><br>
+      Al ingresar los premios mayores del día anterior, el sistema aplica una fórmula para generar posibles números dobles con alta probabilidad estadística.
+    </p>
+  </section>
+
+  <footer style="text-align:center; margin-top: 2em; font-size: 0.9em;">
+    <a href="privacidad.html">Política de Privacidad</a> |
+    <a href="terminos.html">Términos y Condiciones</a> |
+    <a href="contacto.html">Contacto</a>
+  </footer>
+
+  <script>
     function compartir() {
       const combinaciones = document.getElementById('resultadoFinal').innerText;
       const url = encodeURIComponent(window.location.href);
@@ -177,7 +178,40 @@
       });
     }
 
-    document.addEventListener("DOMContentLoaded", mostrarHistorial);
+    document.addEventListener("DOMContentLoaded", () => {
+      mostrarHistorial();
+
+      const campos = [
+        document.getElementById('n1'),
+        document.getElementById('n2'),
+        document.getElementById('n3'),
+        document.getElementById('n4')
+      ];
+
+      const btnCalcular = document.getElementById('btnCalcular');
+
+      function validarCampos() {
+        let todosValidos = true;
+        for (let campo of campos) {
+          const valor = campo.value.trim();
+          if (valor === '' || isNaN(valor) || Number(valor) < 0 || Number(valor) > 99) {
+            todosValidos = false;
+            break;
+          }
+        }
+        btnCalcular.disabled = !todosValidos;
+      }
+
+      campos.forEach(campo => {
+        campo.addEventListener('input', validarCampos);
+      });
+
+      btnCalcular.addEventListener('click', () => {
+        if (!btnCalcular.disabled) {
+          calcularPiramide();
+        }
+      });
+    });
 
     function calcularPiramide() {
       const nums = [
@@ -230,105 +264,10 @@
 
       document.getElementById('resultadoFinal').innerHTML = `
         Posibles combinaciones: <br><br>
-        ${combinaciones.join(', ')}
-      `;
+        ${combinaciones.join(', ')}`;
 
       guardarHistorial(combinaciones.join(', '));
     }
   </script>
-  <script>
-  document.getElementById('btnCalcular').addEventListener('click', () => {
-    const campos = [
-      document.getElementById('n1'),
-      document.getElementById('n2'),
-      document.getElementById('n3'),
-      document.getElementById('n4')
-    ];
-
-    for (let campo of campos) {
-      const valor = campo.value.trim();
-      if (valor === '' || isNaN(valor) || valor < 0 || valor > 99) {
-        alert("Por favor, completa los 4 números del 00 al 99 correctamente.");
-        campo.focus();
-        return; // Detiene el proceso
-      }
-    }
-
-    // Si todo está bien, llama la función de cálculo
-    calcularPiramide();
-  });
-</script>
-
-  <h2 style="text-align: center;">Bienvenido a La Suerte</h2>
-  <p style="max-width: 700px; margin: auto; text-align: center; font-size: 16px;">
-    La Suerte es una herramienta gratuita que genera combinaciones de números para jugar la lotería,
-    basada en una fórmula matemática a partir de los resultados del día anterior de las loterías dominicanas.
-    <br><br>
-    Nuestro sistema toma como base los resultados recientes de las principales loterías dominicanas y realiza
-    un cálculo que ofrece posibles combinaciones numéricas para ayudarte en tus jugadas.
-    <br><br>
-    Este sitio es únicamente de uso informativo y recreativo. No garantizamos premios ni resultados. Juega con responsabilidad.
-  </p>
-
-  <section id="como-funciona" style="padding: 40px 20px; background-color: #f9f9f9;">
-    <h2>¿Cómo funciona?</h2>
-    <p style="max-width: 700px; margin: auto; line-height: 1.6; font-size: 16px;">
-      Esta herramienta utiliza un modelo matemático basado en resultados anteriores de las principales loterías
-      dominicanas (Real, Gana Más, Leidsa y Nacional Noche).
-      <br><br>
-      Al ingresar los premios mayores del día anterior, el sistema aplica una fórmula de reducción y combinación 
-      para generar posibles números dobles con alta probabilidad estadística. 
-      <br><br>
-      Todo se calcula automáticamente, de manera precisa y sin intervención humana.
-    </p>
-  </section>
-
-  <footer style="text-align:center; margin-top: 2em; font-size: 0.9em;">
-    <a href="privacidad.html">Política de Privacidad</a> |
-    <a href="terminos.html">Términos y Condiciones</a> |
-    <a href="contacto.html">Contacto</a>
-  </footer>
-  <script>
-  const campos = [
-    document.getElementById('n1'),
-    document.getElementById('n2'),
-    document.getElementById('n3'),
-    document.getElementById('n4')
-  ];
-
-  const btnCalcular = document.getElementById('btnCalcular');
-
-  function validarCampos() {
-    let todosValidos = true;
-
-    for (let campo of campos) {
-      const valor = campo.value.trim();
-      if (
-        valor === '' ||
-        isNaN(valor) ||
-        Number(valor) < 0 ||
-        Number(valor) > 99
-      ) {
-        todosValidos = false;
-        break;
-      }
-    }
-
-    btnCalcular.disabled = !todosValidos;
-  }
-
-  campos.forEach(campo => {
-    campo.addEventListener('input', validarCampos);
-  });
-
-  btnCalcular.addEventListener('click', () => {
-    if (!btnCalcular.disabled) {
-      calcularPiramide();
-    }
-  });
-</script>
 </body>
 </html>
-
-
-
