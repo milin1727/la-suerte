@@ -148,6 +148,7 @@
     const url = encodeURIComponent(window.location.href);
     const mensaje = encodeURIComponent(`Mira estas combinaciones de lotería:\n\n${combinaciones}\n\n${url}`);
     window.open(`https://wa.me/?text=${mensaje}`, '_blank');
+    guardarHistorial(combinaciones.join(', '));
   }
 </script>
 <script>
@@ -255,6 +256,7 @@
   </script>
 </body>
 </html>
+
 
 
 
