@@ -140,7 +140,7 @@
     <input type="number" id="n4" min="0" max="99" required>
   </div>
 
-  <button id="btnCalcular">Calcular</button>
+  <button id="btnCalcular" disabled>Calcular</button>
 
   <div class="result" id="resultadoFinal">
     <!-- Resultado aparecerá aquí -->
@@ -288,7 +288,47 @@
     <a href="terminos.html">Términos y Condiciones</a> |
     <a href="contacto.html">Contacto</a>
   </footer>
+  <script>
+  const campos = [
+    document.getElementById('n1'),
+    document.getElementById('n2'),
+    document.getElementById('n3'),
+    document.getElementById('n4')
+  ];
+
+  const btnCalcular = document.getElementById('btnCalcular');
+
+  function validarCampos() {
+    let todosValidos = true;
+
+    for (let campo of campos) {
+      const valor = campo.value.trim();
+      if (
+        valor === '' ||
+        isNaN(valor) ||
+        Number(valor) < 0 ||
+        Number(valor) > 99
+      ) {
+        todosValidos = false;
+        break;
+      }
+    }
+
+    btnCalcular.disabled = !todosValidos;
+  }
+
+  campos.forEach(campo => {
+    campo.addEventListener('input', validarCampos);
+  });
+
+  btnCalcular.addEventListener('click', () => {
+    if (!btnCalcular.disabled) {
+      calcularPiramide();
+    }
+  });
+</script>
 </body>
 </html>
+
 
 
