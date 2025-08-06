@@ -137,6 +137,7 @@
   <div class="result" id="resultadoFinal">
     <!-- Resultado aparecerá aquí -->
   </div>
+  <div id="historial" style="margin-top:2em;"></div>
   <div style="margin-top: 2rem;">
   <button onclick="compartir()">Compartir por WhatsApp</button>
   </div>
@@ -149,6 +150,27 @@
     window.open(`https://wa.me/?text=${mensaje}`, '_blank');
   }
 </script>
+<script>
+  function guardarHistorial(combinaciones) {
+    let historial = JSON.parse(localStorage.getItem('historial')) || [];
+    historial.unshift({ fecha: new Date().toLocaleDateString(), datos: combinaciones });
+    localStorage.setItem('historial', JSON.stringify(historial));
+    mostrarHistorial();
+  }
+
+  function mostrarHistorial() {
+    const historial = JSON.parse(localStorage.getItem('historial')) || [];
+    const contenedor = document.getElementById('historial');
+    if (!contenedor) return;
+    contenedor.innerHTML = "<h3>Historial</h3>";
+    historial.slice(0, 5).forEach(item => {
+      contenedor.innerHTML += `<p><strong>${item.fecha}:</strong> ${item.datos}</p>`;
+    });
+  }
+
+  // Llamar al cargar
+  document.addEventListener("DOMContentLoaded", mostrarHistorial);
+</script>  
 
   <h2 style="text-align: center;">Bienvenido a La Suerte</h2>
   <p style="max-width: 700px; margin: auto; text-align: center; font-size: 16px;">
@@ -233,5 +255,6 @@
   </script>
 </body>
 </html>
+
 
 
