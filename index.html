@@ -152,27 +152,7 @@
 
   <div id="historial"></div>
 
-  <script>
-    document.getElementById('btnCalcular').addEventListener('click', () => {
-    const campos = [
-      document.getElementById('n1'),
-      document.getElementById('n2'),
-      document.getElementById('n3'),
-      document.getElementById('n4')
-    ];
-
-    for (let campo of campos) {
-      const valor = campo.value.trim();
-      if (valor === '' || isNaN(valor) || valor < 0 || valor > 99) {
-        alert("Por favor, completa los 4 números del 00 al 99 correctamente.");
-        campo.focus();
-        return; // Detiene el proceso
-      }
-    }
-
-    // Si todo está bien, llama la función de cálculo
-    calcularPiramide();
-  });
+  <script>    
     function compartir() {
       const combinaciones = document.getElementById('resultadoFinal').innerText;
       const url = encodeURIComponent(window.location.href);
@@ -256,6 +236,28 @@
       guardarHistorial(combinaciones.join(', '));
     }
   </script>
+  <script>
+  document.getElementById('btnCalcular').addEventListener('click', () => {
+    const campos = [
+      document.getElementById('n1'),
+      document.getElementById('n2'),
+      document.getElementById('n3'),
+      document.getElementById('n4')
+    ];
+
+    for (let campo of campos) {
+      const valor = campo.value.trim();
+      if (valor === '' || isNaN(valor) || valor < 0 || valor > 99) {
+        alert("Por favor, completa los 4 números del 00 al 99 correctamente.");
+        campo.focus();
+        return; // Detiene el proceso
+      }
+    }
+
+    // Si todo está bien, llama la función de cálculo
+    calcularPiramide();
+  });
+</script>
 
   <h2 style="text-align: center;">Bienvenido a La Suerte</h2>
   <p style="max-width: 700px; margin: auto; text-align: center; font-size: 16px;">
@@ -288,4 +290,5 @@
   </footer>
 </body>
 </html>
+
 
