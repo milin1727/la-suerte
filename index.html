@@ -136,6 +136,18 @@
   <div class="result" id="resultadoFinal">
     <!-- Resultado aparecerá aquí -->
   </div>
+  <div style="margin-top: 2rem;">
+  <button onclick="compartir()">Compartir por WhatsApp</button>
+  </div>
+
+<script>
+  function compartir() {
+    const combinaciones = document.getElementById('resultadoFinal').innerText;
+    const url = encodeURIComponent(window.location.href);
+    const mensaje = encodeURIComponent(`Mira estas combinaciones de lotería:\n\n${combinaciones}\n\n${url}`);
+    window.open(`https://wa.me/?text=${mensaje}`, '_blank');
+  }
+</script>
 
   <h2 style="text-align: center;">Bienvenido a La Suerte</h2>
   <p style="max-width: 700px; margin: auto; text-align: center; font-size: 16px;">
@@ -220,3 +232,4 @@
   </script>
 </body>
 </html>
+
