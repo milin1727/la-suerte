@@ -88,6 +88,14 @@
       padding: 0 1rem;
     }
 
+    #historial {
+      margin-top: 2rem;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     @media (max-width: 600px) {
       h1 {
         font-size: 1.3rem;
@@ -126,10 +134,10 @@
   <h1>Coloca aquí los números que salieron ayer</h1>
 
   <div class="input-group">
-    <input type="number" id="n1" min="0" max="99">
-    <input type="number" id="n2" min="0" max="99">
-    <input type="number" id="n3" min="0" max="99">
-    <input type="number" id="n4" min="0" max="99">
+    <input type="number" id="n1" min="0" max="99" required>
+    <input type="number" id="n2" min="0" max="99" required>
+    <input type="number" id="n3" min="0" max="99" required>
+    <input type="number" id="n4" min="0" max="99" required>
   </div>
 
   <button onclick="calcularPiramide()">Calcular</button>
@@ -137,71 +145,40 @@
   <div class="result" id="resultadoFinal">
     <!-- Resultado aparecerá aquí -->
   </div>
+
   <div style="margin-top: 2rem;">
-  <button onclick="compartir()">Compartir por WhatsApp</button>
+    <button onclick="compartir()">Compartir por WhatsApp</button>
   </div>
 
-<script>
-  function compartir() {
-    const combinaciones = document.getElementById('resultadoFinal').innerText;
-    const url = encodeURIComponent(window.location.href);
-    const mensaje = encodeURIComponent(`Mira estas combinaciones de lotería:\n\n${combinaciones}\n\n${url}`);
-    window.open(`https://wa.me/?text=${mensaje}`, '_blank');
-  }
-</script>
-<script>
-  function guardarHistorial(combinaciones) {
-    let historial = JSON.parse(localStorage.getItem('historial')) || [];
-    historial.unshift({ fecha: new Date().toLocaleDateString(), datos: combinaciones });
-    localStorage.setItem('historial', JSON.stringify(historial));
-    mostrarHistorial();
-  }
-
-  function mostrarHistorial() {
-    const historial = JSON.parse(localStorage.getItem('historial')) || [];
-    const contenedor = document.getElementById('historial');
-    if (!contenedor) return;
-    contenedor.innerHTML = "<h3>Historial</h3>";
-    historial.slice(0, 5).forEach(item => {
-      contenedor.innerHTML += `<p><strong>${item.fecha}:</strong> ${item.datos}</p>`;
-    });
-  }
-
-  // Llamar al cargar
-  document.addEventListener("DOMContentLoaded", mostrarHistorial);
-</script>  
-
-  <h2 style="text-align: center;">Bienvenido a La Suerte</h2>
-  <p style="max-width: 700px; margin: auto; text-align: center; font-size: 16px;">
-    La Suerte es una herramienta gratuita que genera combinaciones de números para jugar la lotería,
-    basada en una fórmula matemática a partir de los resultados del día anterior de las loterías dominicanas.
-    <br><br>
-    Nuestro sistema toma como base los resultados recientes de las principales loterías dominicanas y realiza
-    un cálculo que ofrece posibles combinaciones numéricas para ayudarte en tus jugadas.
-    <br><br>
-    Este sitio es únicamente de uso informativo y recreativo. No garantizamos premios ni resultados. Juega con responsabilidad.
-  </p>
-
-  <section id="como-funciona" style="padding: 40px 20px; background-color: #f9f9f9;">
-    <h2>¿Cómo funciona?</h2>
-    <p style="max-width: 700px; margin: auto; line-height: 1.6; font-size: 16px;">
-      Esta herramienta utiliza un modelo matemático basado en resultados anteriores de las principales loterías
-      dominicanas (Real, Gana Más, Leidsa y Nacional Noche).
-      <br><br>
-      Al ingresar los premios mayores del día anterior, el sistema aplica una fórmula de reducción y combinación 
-      para generar posibles números dobles con alta probabilidad estadística. 
-      <br><br>
-      Todo se calcula automáticamente, de manera precisa y sin intervención humana.
-    </p>
-  </section>
-
-  <footer style="text-align:center; margin-top: 2em; font-size: 0.9em;">
-    <a href="privacidad.html">Política de Privacidad</a> |
-    <a href="terminos.html">Términos y Condiciones</a> |
-    <a href="contacto.html">Contacto</a>
-  </footer>
+  <div id="historial"></div>
 
   <script>
+    function compartir() {
+      const combinaciones = document.getElementById('resultadoFinal').innerText;
+      const url = encodeURIComponent(window.location.href);
+      const mensaje = encodeURIComponent(`Mira estas combinaciones de lotería:\n\n${combinaciones}\n\n${url}`);
+      window.open(`https://wa.me/?text=${mensaje}`, '_blank');
+    }
+
+    function guardarHistorial(combinaciones) {
+      let historial = JSON.parse(localStorage.getItem('historial')) || [];
+      historial.unshift({ fecha: new Date().toLocaleDateString(), datos: combinaciones });
+      localStorage.setItem('historial', JSON.stringify(historial));
+      mostrarHistorial();
+    }
+
+    function mostrarHistorial() {
+      const historial = JSON.parse(localStorage.getItem('historial')) || [];
+      const contenedor = document.getElementById('historial');
+      if (!contenedor) return;
+      contenedor.innerHTML = "<h3>Historial</h3>";
+      historial.slice(0, 5).forEach(item => {
+        contenedor.innerHTML += `<p><strong>${item.fecha}:</strong> ${item.datos}</p>`;
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", mostrarHistorial);
+
     function calcularPiramide() {
       const nums = [
         document.getElementById('n1').value,
@@ -209,6 +186,11 @@
         document.getElementById('n3').value,
         document.getElementById('n4').value
       ];
+
+      if (nums.some(n => n === '')) {
+        alert("Por favor completa todos los números.");
+        return;
+      }
 
       const fila1 = nums.flatMap(n => n.toString().padStart(2, '0').split('').map(Number));
 
@@ -250,13 +232,39 @@
         Posibles combinaciones: <br><br>
         ${combinaciones.join(', ')}
       `;
+
+      guardarHistorial(combinaciones.join(', '));
     }
   </script>
+
+  <h2 style="text-align: center;">Bienvenido a La Suerte</h2>
+  <p style="max-width: 700px; margin: auto; text-align: center; font-size: 16px;">
+    La Suerte es una herramienta gratuita que genera combinaciones de números para jugar la lotería,
+    basada en una fórmula matemática a partir de los resultados del día anterior de las loterías dominicanas.
+    <br><br>
+    Nuestro sistema toma como base los resultados recientes de las principales loterías dominicanas y realiza
+    un cálculo que ofrece posibles combinaciones numéricas para ayudarte en tus jugadas.
+    <br><br>
+    Este sitio es únicamente de uso informativo y recreativo. No garantizamos premios ni resultados. Juega con responsabilidad.
+  </p>
+
+  <section id="como-funciona" style="padding: 40px 20px; background-color: #f9f9f9;">
+    <h2>¿Cómo funciona?</h2>
+    <p style="max-width: 700px; margin: auto; line-height: 1.6; font-size: 16px;">
+      Esta herramienta utiliza un modelo matemático basado en resultados anteriores de las principales loterías
+      dominicanas (Real, Gana Más, Leidsa y Nacional Noche).
+      <br><br>
+      Al ingresar los premios mayores del día anterior, el sistema aplica una fórmula de reducción y combinación 
+      para generar posibles números dobles con alta probabilidad estadística. 
+      <br><br>
+      Todo se calcula automáticamente, de manera precisa y sin intervención humana.
+    </p>
+  </section>
+
+  <footer style="text-align:center; margin-top: 2em; font-size: 0.9em;">
+    <a href="privacidad.html">Política de Privacidad</a> |
+    <a href="terminos.html">Términos y Condiciones</a> |
+    <a href="contacto.html">Contacto</a>
+  </footer>
 </body>
 </html>
-
-
-
-
-
-
