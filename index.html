@@ -121,7 +121,7 @@
     <input type="number" id="n4" min="0" max="99" required>
   </div>
 
-  <button id="btnCalcular" disabled>Calcular Palés</button>
+  <button id="btnCalcular" disabled>Calcular</button>
 
   <div class="result" id="resultadoFinal"></div>
 
@@ -132,19 +132,19 @@
   <div id="historial"></div>
 
   <h2 style="text-align: center;">Bienvenido a La Suerte</h2>
-  <div style="max-width: 700px; margin: auto; font-size: 16px; line-height: 1.6; text-align: justify;">
-    <p>
-      <strong>La Suerte</strong> es una herramienta gratuita que genera combinaciones de números para jugar la lotería,
-      basada en una fórmula matemática a partir de los resultados del día anterior de las loterías dominicanas.
-    </p>
-    <p>
-      Nuestro sistema toma como base los resultados recientes de las principales loterías dominicanas y realiza
-      un cálculo que ofrece posibles combinaciones numéricas para ayudarte en tus jugadas.
-    </p>
-    <p>
-      Este sitio es únicamente de uso informativo y recreativo. No garantizamos premios ni resultados. Juega con responsabilidad.
-    </p>
-  </div>
+<div style="max-width: 700px; margin: auto; font-size: 16px; line-height: 1.6; text-align: justify;">
+  <p>
+    <strong>La Suerte</strong> es una herramienta gratuita que genera combinaciones de números para jugar la lotería,
+    basada en una fórmula matemática a partir de los resultados del día anterior de las loterías dominicanas.
+  </p>
+  <p>
+    Nuestro sistema toma como base los resultados recientes de las principales loterías dominicanas y realiza
+    un cálculo que ofrece posibles combinaciones numéricas para ayudarte en tus jugadas.
+  </p>
+  <p>
+    Este sitio es únicamente de uso informativo y recreativo. No garantizamos premios ni resultados. Juega con responsabilidad.
+  </p>
+</div>
 
 <section id="como-funciona" style="padding: 40px 20px; background-color: #f9f9f9;">
   <h2 style="text-align: center;">¿Cómo funciona?</h2>
@@ -170,7 +170,6 @@
   </footer>
 
   <script>
-    // Compartir por WhatsApp
     function compartir() {
       const combinaciones = document.getElementById('resultadoFinal').innerText;
       const url = encodeURIComponent(window.location.href);
@@ -178,7 +177,6 @@
       window.open(`https://wa.me/?text=${mensaje}`, '_blank');
     }
 
-    // Guardar historial
     function guardarHistorial(combinaciones) {
       let historial = JSON.parse(localStorage.getItem('historial')) || [];
       historial.unshift({ fecha: new Date().toLocaleDateString(), datos: combinaciones });
@@ -196,7 +194,6 @@
       });
     }
 
-    // Habilitar botón solo si todos los campos están completos
     document.addEventListener("DOMContentLoaded", () => {
       mostrarHistorial();
 
@@ -227,54 +224,67 @@
 
       btnCalcular.addEventListener('click', () => {
         if (!btnCalcular.disabled) {
-          calcularPales();
+          calcularPiramide();
         }
       });
     });
 
-    // Tabla de equivalencia
-    function equivalencia(d) {
-      switch(d) {
-        case 0: return 5;
-        case 1: return 6;
-        case 2: return 7;
-        case 3: return 8;
-        case 4: return 9;
-        default: return d;
+    function calcularPiramide() {
+      const nums = [
+        document.getElementById('n1').value,
+        document.getElementById('n2').value,
+        document.getElementById('n3').value,
+        document.getElementById('n4').value
+      ];
+
+      if (nums.some(n => n === '')) {
+        alert("Por favor completa todos los números.");
+        return;
       }
-    }
 
-    // Función principal para calcular palés
-    function calcularPales() {
-      const n1 = Number(document.getElementById('n1').value);
-      const n2 = Number(document.getElementById('n2').value);
-      const n3 = Number(document.getElementById('n3').value);
-      const n4 = Number(document.getElementById('n4').value);
+      const fila1 = nums.flatMap(n => n.toString().padStart(2, '0').split('').map(Number));
 
-      const premios = [n1, n2, n3, n4];
+      function sumatoriaVectorial(fila) {
+        const nueva = [];
+        for (let i = 0; i < fila.length - 1; i++) {
+          const suma = fila[i] + fila[i + 1];
+          nueva.push(suma % 10);
+        }
+        return nueva;
+      }
 
-      // Obtener día actual
-      const dia = new Date().getDate();
+      let fila = fila1;
+      const filas = [fila1];
+      for (let i = 0; i < 6; i++) {
+        fila = sumatoriaVectorial(fila);
+        filas.push(fila);
+      }
 
-      const pales = premios.map(num => {
-        const dec = Math.floor(num / 10);
-        const uni = num % 10;
-        return `${equivalencia(dec)}${equivalencia(uni)}`;
-      });
+      const fila7 = filas[6];
+      const fila8 = sumatoriaVectorial(fila7);
+      filas.push(fila8);
 
-      // Combinar en pares
-      const pares = [];
-      for(let i=0; i<pales.length; i+=2) {
-        pares.push(`${pales[i]}-${pales[i+1]}`);
+      const fila9 = fila7.map(d => (d + fila8[0]) % 10);
+      filas.push(fila9);
+
+      const fila10 = sumatoriaVectorial(fila9);
+      filas.push(fila10);
+
+      const sugerencias = [...fila9, ...fila10];
+      const combinaciones = [];
+      for (let i = 0; i < sugerencias.length; i++) {
+        for (let j = i + 1; j < sugerencias.length; j++) {
+          combinaciones.push(`${sugerencias[i]}${sugerencias[j]}`);
+        }
       }
 
       document.getElementById('resultadoFinal').innerHTML = `
-        Palés: <br><br> ${pares.join(', ')}
-      `;
+        Posibles combinaciones: <br><br>
+        ${combinaciones.join(', ')}`;
 
-      guardarHistorial(pares.join(', '));
+      guardarHistorial(combinaciones.join(', '));
     }
   </script>
-
 </body>
 </html>
+
