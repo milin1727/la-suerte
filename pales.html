@@ -2,65 +2,57 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Calculadora de Palés Automática</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Palés</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 40px; background: #f7f7f7; }
-  h1 { color: #333; }
-  input { padding: 5px; margin: 5px; width: 60px; }
-  button { padding: 5px 15px; margin: 10px 0; }
-  #resultado { margin-top: 20px; font-weight: bold; font-size: 18px; }
+  body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+  input { width: 50px; margin: 5px; text-align: center; }
+  button { margin-top: 10px; padding: 5px 10px; }
+  #resultado { margin-top: 15px; font-weight: bold; }
 </style>
 </head>
 <body>
 
-<h1>Calculadora de Palés Automática</h1>
+<h2>Calculadora de Palés</h2>
 
-<p>Ingresa los premios de Fila1:</p>
-<input type="number" id="premio1" placeholder="Premio 1">
-<input type="number" id="premio2" placeholder="Premio 2">
-<input type="number" id="premio3" placeholder="Premio 3">
-<input type="number" id="premio4" placeholder="Premio 4">
+<p>Ingresa los premios de Fila1 (premios mayores):</p>
+<input type="number" id="f1_1"> 
+<input type="number" id="f1_2"> 
+<input type="number" id="f1_3"> 
+<input type="number" id="f1_4">
+
+<p>Ingresa los valores de Fila3 (para igualar al día):</p>
+<input type="number" id="f3_1"> 
+<input type="number" id="f3_2"> 
+<input type="number" id="f3_3"> 
+<input type="number" id="f3_4">
+
 <br>
-
 <button onclick="calcularPales()">Calcular Palés</button>
 
 <div id="resultado"></div>
 
 <script>
 function calcularPales() {
-    // Obtener premios de Fila1
-    let f1 = [
-        document.getElementById('premio1').value,
-        document.getElementById('premio2').value,
-        document.getElementById('premio3').value,
-        document.getElementById('premio4').value
+    const f3 = [
+        document.getElementById('f3_1').value,
+        document.getElementById('f3_2').value,
+        document.getElementById('f3_3').value,
+        document.getElementById('f3_4').value
     ];
 
-    if(f1.some(v => v === '')) {
-        alert('Por favor, ingresa todos los premios de Fila1.');
-        return;
-    }
+    const tabla = {0:5,1:6,2:7,3:8,4:9,5:0,6:1,7:2,8:3,9:4};
 
-    // --- Aquí aplicamos la lógica de "igualar al día" para generar Fila3 ---
-    // Esto es un ejemplo basado en tus valores de prueba:
-    let fila3 = [64, 13, 25, 32]; // Puedes ajustar según tu fórmula real
-
-    // Tabla de equivalencia
-    const tabla = {0:5, 1:6, 2:7, 3:8, 4:9, 5:0, 6:1, 7:2, 8:3, 9:4};
-
-    // Aplicar tabla a cada dígito de Fila3
-    let fila4 = fila3.map(num => {
-        let s = num.toString().padStart(2,'0'); // asegurar 2 dígitos
-        let d1 = parseInt(s[0]);
-        let d2 = parseInt(s[1]);
-        return '' + tabla[d1] + tabla[d2];
+    const f4 = f3.map(num => {
+        if(num.length < 2) num = '0' + num; // asegura dos dígitos
+        const d1 = tabla[num[0]];
+        const d2 = tabla[num[1]];
+        return `${d1}${d2}`;
     });
 
-    // Formar pares
-    let pales = fila4[0] + '-' + fila4[1] + ', ' + fila4[2] + '-' + fila4[3];
-
-    // Mostrar resultado
-    document.getElementById('resultado').innerText = "Palés: " + pales + "\n(Fila3: " + fila3.join(", ") + ")";
+    // Mostrar pares de palés
+    const resultado = `${f4[0]}-${f4[1]}, ${f4[2]}-${f4[3]}`;
+    document.getElementById('resultado').innerText = `Palés: ${resultado}`;
 }
 </script>
 
