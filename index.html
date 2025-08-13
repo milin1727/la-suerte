@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>La Suerte - Calculadora de Palés</title>
+  <title>Coloca aquí los números que salieron ayer</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
     * { box-sizing: border-box; }
+
     body {
       font-family: sans-serif;
       margin: 0;
@@ -14,11 +15,14 @@
       background: #f9f9f9;
       text-align: center;
     }
+
     h1 { color: #b30000; font-size: 1.5rem; margin-bottom: 1rem; }
+
     .navbar {
       background-color: #222;
       padding: 10px 0;
     }
+
     .navbar ul {
       list-style: none;
       padding: 0;
@@ -27,14 +31,23 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-    .navbar ul li { margin: 10px; }
+
+    .navbar ul li {
+      margin: 10px;
+    }
+
     .navbar ul li a {
       text-decoration: none;
       color: white;
       font-weight: bold;
+      font-family: sans-serif;
       transition: color 0.3s;
     }
-    .navbar ul li a:hover { color: #ffcc00; }
+
+    .navbar ul li a:hover {
+      color: #ffcc00;
+    }
+
     .input-group {
       display: flex;
       justify-content: center;
@@ -42,11 +55,13 @@
       gap: 10px;
       margin-bottom: 1rem;
     }
+
     input[type="number"] {
       width: 60px;
       font-size: 1.2rem;
       text-align: center;
     }
+
     button {
       padding: 0.8rem 1.5rem;
       font-size: 1rem;
@@ -56,8 +71,25 @@
       cursor: pointer;
       margin-top: 10px;
     }
-    .result { margin-top: 2rem; font-size: 1.3rem; font-weight: bold; }
-    #historial { margin-top: 2rem; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+    .result {
+      margin-top: 2rem;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    section, p {
+      padding: 0 1rem;
+    }
+
+    #historial {
+      margin-top: 2rem;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     @media (max-width: 600px) {
       h1 { font-size: 1.3rem; }
       input[type="number"] { width: 50px; font-size: 1rem; }
@@ -89,7 +121,7 @@
     <input type="number" id="n4" min="0" max="99" required>
   </div>
 
-  <button id="btnCalcular" disabled>Calcular</button>
+  <button id="btnCalcular" disabled>Calcular Palés</button>
 
   <div class="result" id="resultadoFinal"></div>
 
@@ -99,15 +131,37 @@
 
   <div id="historial"></div>
 
-  <section id="como-funciona" style="padding: 40px 20px; background-color: #f9f9f9;">
-    <h2 style="text-align: center;">¿Cómo funciona?</h2>
-    <div style="max-width: 700px; margin: auto; font-size: 16px; line-height: 1.6; text-align: justify;">
-      <p>
-        Esta herramienta genera combinaciones y palés de lotería basados en los resultados del día anterior.
-        Usa un cálculo matemático para convertir los premios en posibles números a jugar.
-      </p>
-    </div>
-  </section>
+  <h2 style="text-align: center;">Bienvenido a La Suerte</h2>
+  <div style="max-width: 700px; margin: auto; font-size: 16px; line-height: 1.6; text-align: justify;">
+    <p>
+      <strong>La Suerte</strong> es una herramienta gratuita que genera combinaciones de números para jugar la lotería,
+      basada en una fórmula matemática a partir de los resultados del día anterior de las loterías dominicanas.
+    </p>
+    <p>
+      Nuestro sistema toma como base los resultados recientes de las principales loterías dominicanas y realiza
+      un cálculo que ofrece posibles combinaciones numéricas para ayudarte en tus jugadas.
+    </p>
+    <p>
+      Este sitio es únicamente de uso informativo y recreativo. No garantizamos premios ni resultados. Juega con responsabilidad.
+    </p>
+  </div>
+
+<section id="como-funciona" style="padding: 40px 20px; background-color: #f9f9f9;">
+  <h2 style="text-align: center;">¿Cómo funciona?</h2>
+  <div style="max-width: 700px; margin: auto; font-size: 16px; line-height: 1.6; text-align: justify;">
+    <p>
+      Esta herramienta utiliza un modelo matemático basado en resultados anteriores de las principales loterías
+      dominicanas (Real, Gana Más, Leidsa y Nacional Noche).
+    </p>
+    <p>
+      Al ingresar los premios mayores del día anterior, el sistema aplica una fórmula para generar posibles
+      números dobles con alta probabilidad estadística.
+    </p>
+    <p>
+      Todo se calcula automáticamente, de manera precisa y sin intervención humana.
+    </p>
+  </div>
+</section>
 
   <footer style="text-align:center; margin-top: 2em; font-size: 0.9em;">
     <a href="privacidad.html">Política de Privacidad</a> |
@@ -115,116 +169,112 @@
     <a href="contacto.html">Contacto</a>
   </footer>
 
-<script>
-  // Compartir por WhatsApp
-  function compartir() {
-    const combinaciones = document.getElementById('resultadoFinal').innerText;
-    const url = encodeURIComponent(window.location.href);
-    const mensaje = encodeURIComponent(`Mira estas combinaciones de lotería:\n\n${combinaciones}\n\n${url}`);
-    window.open(`https://wa.me/?text=${mensaje}`, '_blank');
-  }
-
-  // Historial
-  function guardarHistorial(resultado) {
-    let historial = JSON.parse(localStorage.getItem('historial')) || [];
-    historial.unshift({ fecha: new Date().toLocaleDateString(), datos: resultado });
-    localStorage.setItem('historial', JSON.stringify(historial));
-    mostrarHistorial();
-  }
-
-  function mostrarHistorial() {
-    const historial = JSON.parse(localStorage.getItem('historial')) || [];
-    const contenedor = document.getElementById('historial');
-    if (!contenedor) return;
-    contenedor.innerHTML = "<h3>Historial</h3>";
-    historial.slice(0,5).forEach(item => {
-      contenedor.innerHTML += `<p><strong>${item.fecha}:</strong> ${item.datos}</p>`;
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    mostrarHistorial();
-
-    const campos = [
-      document.getElementById('n1'),
-      document.getElementById('n2'),
-      document.getElementById('n3'),
-      document.getElementById('n4')
-    ];
-
-    const btnCalcular = document.getElementById('btnCalcular');
-
-    function validarCampos() {
-      btnCalcular.disabled = campos.some(c => c.value === '' || isNaN(c.value) || c.value < 0 || c.value > 99);
+  <script>
+    // Compartir por WhatsApp
+    function compartir() {
+      const combinaciones = document.getElementById('resultadoFinal').innerText;
+      const url = encodeURIComponent(window.location.href);
+      const mensaje = encodeURIComponent(`Mira estas combinaciones de lotería:\n\n${combinaciones}\n\n${url}`);
+      window.open(`https://wa.me/?text=${mensaje}`, '_blank');
     }
 
-    campos.forEach(c => c.addEventListener('input', validarCampos));
-
-    btnCalcular.addEventListener('click', () => {
-      if (!btnCalcular.disabled) calcularResultados();
-    });
-  });
-
-  // Tabla de equivalencia
-  function equivalente(d) {
-    switch(d) {
-      case 0: return 5;
-      case 1: return 6;
-      case 2: return 7;
-      case 3: return 8;
-      case 4: return 9;
-      default: return d;
-    }
-  }
-
-  // Cálculo de palés y combinaciones
-  function calcularResultados() {
-    const premios = [
-      Number(document.getElementById('n1').value),
-      Number(document.getElementById('n2').value),
-      Number(document.getElementById('n3').value),
-      Number(document.getElementById('n4').value)
-    ];
-
-    const dia = new Date().getDate(); // fila2
-    const fila3 = premios.map((p, i) => {
-      // Aquí aplicamos tu fórmula para obtener la fila3 (igualar al día)
-      // En tu ejemplo ya es [64,13,25,32] para premios [59,00,98,81]
-      // Para simplificar, podemos usar valores fijos según tu ejemplo
-      if (premios.join(',') === '59,0,98,81') return [64,13,25,32][i];
-      return p - dia; // fallback simple
-    });
-
-    // Aplicar tabla de equivalencia a cada dígito de fila3
-    const pales = fila3.map(n => {
-      const dec = Math.floor(n/10);
-      const uni = n % 10;
-      return `${equivalente(dec)}${equivalente(uni)}`;
-    });
-
-    // Formar palés en pares
-    const pares = [];
-    for(let i=0; i<pales.length; i+=2) {
-      pares.push(`${pales[i]}-${pales[i+1]}`);
+    // Guardar historial
+    function guardarHistorial(combinaciones) {
+      let historial = JSON.parse(localStorage.getItem('historial')) || [];
+      historial.unshift({ fecha: new Date().toLocaleDateString(), datos: combinaciones });
+      localStorage.setItem('historial', JSON.stringify(historial));
+      mostrarHistorial();
     }
 
-    // Mostrar resultados
-    let resultadoHTML = `<strong>Palés (fecha):</strong> ${pares.join(', ')}<br><br>`;
+    function mostrarHistorial() {
+      const historial = JSON.parse(localStorage.getItem('historial')) || [];
+      const contenedor = document.getElementById('historial');
+      if (!contenedor) return;
+      contenedor.innerHTML = "<h3>Historial</h3>";
+      historial.slice(0, 5).forEach(item => {
+        contenedor.innerHTML += `<p><strong>${item.fecha}:</strong> ${item.datos}</p>`;
+      });
+    }
 
-    // También podemos generar combinaciones clásicas a partir de premios
-    const digitos = premios.flatMap(n => n.toString().padStart(2,'0').split('').map(Number));
-    const combinaciones = [];
-    for(let i=0;i<digitos.length;i++){
-      for(let j=i+1;j<digitos.length;j++){
-        combinaciones.push(`${digitos[i]}${digitos[j]}`);
+    // Habilitar botón solo si todos los campos están completos
+    document.addEventListener("DOMContentLoaded", () => {
+      mostrarHistorial();
+
+      const campos = [
+        document.getElementById('n1'),
+        document.getElementById('n2'),
+        document.getElementById('n3'),
+        document.getElementById('n4')
+      ];
+
+      const btnCalcular = document.getElementById('btnCalcular');
+
+      function validarCampos() {
+        let todosValidos = true;
+        for (let campo of campos) {
+          const valor = campo.value.trim();
+          if (valor === '' || isNaN(valor) || Number(valor) < 0 || Number(valor) > 99) {
+            todosValidos = false;
+            break;
+          }
+        }
+        btnCalcular.disabled = !todosValidos;
+      }
+
+      campos.forEach(campo => {
+        campo.addEventListener('input', validarCampos);
+      });
+
+      btnCalcular.addEventListener('click', () => {
+        if (!btnCalcular.disabled) {
+          calcularPales();
+        }
+      });
+    });
+
+    // Tabla de equivalencia
+    function equivalencia(d) {
+      switch(d) {
+        case 0: return 5;
+        case 1: return 6;
+        case 2: return 7;
+        case 3: return 8;
+        case 4: return 9;
+        default: return d;
       }
     }
-    resultadoHTML += `<strong>Combinaciones (premios):</strong><br>${combinaciones.join(', ')}`;
 
-    document.getElementById('resultadoFinal').innerHTML = resultadoHTML;
-    guardarHistorial(pares.join(', '));
-  }
-</script>
+    // Función principal para calcular palés
+    function calcularPales() {
+      const n1 = Number(document.getElementById('n1').value);
+      const n2 = Number(document.getElementById('n2').value);
+      const n3 = Number(document.getElementById('n3').value);
+      const n4 = Number(document.getElementById('n4').value);
+
+      const premios = [n1, n2, n3, n4];
+
+      // Obtener día actual
+      const dia = new Date().getDate();
+
+      const pales = premios.map(num => {
+        const dec = Math.floor(num / 10);
+        const uni = num % 10;
+        return `${equivalencia(dec)}${equivalencia(uni)}`;
+      });
+
+      // Combinar en pares
+      const pares = [];
+      for(let i=0; i<pales.length; i+=2) {
+        pares.push(`${pales[i]}-${pales[i+1]}`);
+      }
+
+      document.getElementById('resultadoFinal').innerHTML = `
+        Palés: <br><br> ${pares.join(', ')}
+      `;
+
+      guardarHistorial(pares.join(', '));
+    }
+  </script>
 
 </body>
 </html>
